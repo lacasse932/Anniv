@@ -1,0 +1,912 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIPLE ANNIVERSAIRE // DOSSIER 05122026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Special+Elite&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --red: #a10e13;
+  --blood: #510407;
+  --white: #c8c2ba;
+  --grey: #77736c;
+  --black: #030303;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; }
+
+html { scroll-behavior:smooth; }
+
+body {
+  background:#020202;
+  color:var(--white);
+  font-family:'Special Elite',monospace;
+  overflow-x:hidden;
+  cursor:crosshair;
+}
+
+/* TUNNEL */
+
+.tunnel {
+  position:fixed;
+  inset:0;
+  z-index:-5;
+  background:
+    linear-gradient(0deg, #000 0%, transparent 55%, #000 100%),
+    linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.18),rgba(0,0,0,.85)),
+    url("https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=2000&q=85")
+    center/cover no-repeat;
+  filter:grayscale(100%) brightness(.24) contrast(1.4);
+  transform:scale(1.08);
+  animation:breathing 12s infinite alternate;
+}
+
+@keyframes breathing {
+  from { transform:scale(1.08); }
+  to { transform:scale(1.15) translateY(-8px); }
+}
+
+/* FAUX TUNNEL */
+
+.tunnel-shape {
+  position:fixed;
+  z-index:-4;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 48%,
+      transparent 0%,
+      transparent 20%,
+      rgba(0,0,0,.4) 45%,
+      #000 100%);
+}
+
+/* BRUME */
+
+.fog {
+  position:fixed;
+  z-index:2;
+  pointer-events:none;
+  inset:0;
+  opacity:.12;
+  background:
+    radial-gradient(ellipse at 20% 75%, #aaa 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 35%, #888 0%, transparent 40%);
+  filter:blur(35px);
+  animation:fogmove 16s ease-in-out infinite alternate;
+}
+
+@keyframes fogmove {
+  from { transform:translateX(-5%) scale(1); }
+  to { transform:translateX(7%) scale(1.2); }
+}
+
+/* GRAIN */
+
+.noise {
+  position:fixed;
+  inset:-50%;
+  z-index:20;
+  pointer-events:none;
+  opacity:.12;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+  animation:noise .18s steps(2) infinite;
+}
+
+@keyframes noise {
+  0% { transform:translate(0,0); }
+  25% { transform:translate(2%,-2%); }
+  50% { transform:translate(-2%,2%); }
+  75% { transform:translate(2%,2%); }
+  100% { transform:translate(-2%,-2%); }
+}
+
+/* VHS */
+
+.scanlines {
+  position:fixed;
+  inset:0;
+  z-index:19;
+  pointer-events:none;
+  background:repeating-linear-gradient(
+    transparent 0px,
+    rgba(0,0,0,.15) 1px,
+    transparent 3px,
+    rgba(0,0,0,.25) 4px
+  );
+}
+
+.vhs {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:3px;
+  background:rgba(255,255,255,.12);
+  z-index:21;
+  animation:tracking 7s linear infinite;
+}
+
+@keyframes tracking {
+  0% { top:-5px; }
+  100% { top:100%; }
+}
+
+/* FLASH */
+
+.flicker {
+  position:fixed;
+  inset:0;
+  z-index:18;
+  pointer-events:none;
+  background:white;
+  opacity:0;
+  animation:flicker 8s infinite;
+}
+
+@keyframes flicker {
+  0%, 94%, 96%, 100% { opacity:0; }
+  95% { opacity:.035; }
+  97% { opacity:.015; }
+}
+
+/* HUD */
+
+.hud {
+  position:fixed;
+  z-index:25;
+  top:20px;
+  left:22px;
+  right:22px;
+  display:flex;
+  justify-content:space-between;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:2px;
+  color:#888;
+}
+
+.rec {
+  color:#b31a1a;
+  animation:blink 1.2s infinite;
+}
+
+@keyframes blink {
+  50% { opacity:.15; }
+}
+
+/* INTRO */
+
+.intro {
+  position:fixed;
+  z-index:100;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  background:#020202;
+  padding:25px;
+  transition:opacity 1.5s, visibility 1.5s;
+}
+
+.intro.hidden {
+  opacity:0;
+  visibility:hidden;
+}
+
+.intro-label {
+  font-family:'Share Tech Mono',monospace;
+  color:#8b1717;
+  font-size:11px;
+  letter-spacing:5px;
+  margin-bottom:40px;
+}
+
+.intro h1 {
+  font-family:'Creepster',cursive;
+  font-size:clamp(55px,12vw,120px);
+  font-weight:400;
+  color:#8d1111;
+  text-shadow:0 0 35px #490000;
+  animation:distort 3s infinite;
+}
+
+.intro p {
+  margin-top:35px;
+  color:#777;
+  letter-spacing:4px;
+  font-size:12px;
+}
+
+.enter {
+  margin-top:60px;
+  padding:18px 38px;
+  background:transparent;
+  border:1px solid #651010;
+  color:#b9aaa0;
+  font-family:'Share Tech Mono',monospace;
+  letter-spacing:4px;
+  cursor:pointer;
+  transition:.4s;
+}
+
+.enter:hover {
+  background:#650b0b;
+  color:white;
+  box-shadow:0 0 40px #580000;
+}
+
+/* MAIN */
+
+main {
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:110px 20px 70px;
+  text-align:center;
+  position:relative;
+}
+
+.file {
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:4px;
+  color:#8b1717;
+  margin-bottom:35px;
+}
+
+.warning {
+  color:#777;
+  font-size:10px;
+  letter-spacing:4px;
+  margin-bottom:22px;
+}
+
+h2 {
+  font-family:'Creepster',cursive;
+  font-weight:400;
+  font-size:clamp(55px,10vw,110px);
+  line-height:.92;
+  color:#b9b2a8;
+  text-shadow:
+    2px 0 #510000,
+    -2px 0 #111,
+    0 0 40px rgba(110,0,0,.35);
+  animation:distort 5s infinite;
+}
+
+@keyframes distort {
+  0%,90%,100% { transform:translate(0); }
+  91% { transform:translate(-2px,1px) skewX(1deg); }
+  92% { transform:translate(3px,-1px); }
+  93% { transform:translate(-1px,2px); }
+}
+
+.subtitle {
+  font-family:'Share Tech Mono',monospace;
+  color:#9a1515;
+  letter-spacing:8px;
+  font-size:12px;
+  margin-top:25px;
+}
+
+.divider {
+  width:120px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,#8c1010,transparent);
+  margin:40px auto;
+}
+
+/* INVITATION */
+
+.card {
+  width:min(100%,560px);
+  padding:35px 20px;
+  border:1px solid rgba(145,25,25,.4);
+  background:rgba(0,0,0,.72);
+  box-shadow:0 0 70px rgba(80,0,0,.12);
+  position:relative;
+}
+
+.card:before,
+.card:after {
+  content:"";
+  position:absolute;
+  width:22px;
+  height:22px;
+  border-color:#a31c1c;
+  border-style:solid;
+}
+
+.card:before {
+  top:-1px;left:-1px;
+  border-width:1px 0 0 1px;
+}
+
+.card:after {
+  bottom:-1px;right:-1px;
+  border-width:0 1px 1px 0;
+}
+
+.card-label {
+  font-family:'Share Tech Mono',monospace;
+  color:#8b1515;
+  font-size:10px;
+  letter-spacing:5px;
+  margin-bottom:25px;
+}
+
+.date {
+  font-size:clamp(19px,4vw,27px);
+  color:#ddd4c9;
+  line-height:1.7;
+}
+
+.place {
+  color:#9c1717;
+  font-size:20px;
+  letter-spacing:3px;
+  margin-top:15px;
+}
+
+/* COUNTDOWN */
+
+.countdown-title {
+  font-family:'Share Tech Mono',monospace;
+  color:#9d1717;
+  letter-spacing:5px;
+  font-size:12px;
+  margin-top:65px;
+  margin-bottom:25px;
+}
+
+.countdown {
+  display:flex;
+  gap:clamp(12px,4vw,35px);
+  justify-content:center;
+}
+
+.unit {
+  min-width:55px;
+}
+
+.unit strong {
+  display:block;
+  font-size:clamp(30px,6vw,50px);
+  font-weight:400;
+  color:#ddd;
+}
+
+.unit small {
+  display:block;
+  font-family:'Share Tech Mono',monospace;
+  font-size:9px;
+  letter-spacing:2px;
+  color:#8e1515;
+  margin-top:9px;
+}
+
+/* IMPORTANT */
+
+.reveal {
+  margin-top:60px;
+  background:rgba(0,0,0,.75);
+  border:1px solid #651010;
+  color:#a99c91;
+  padding:20px 28px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:3px;
+  cursor:pointer;
+  transition:.4s;
+}
+
+.reveal:hover {
+  background:#420707;
+  color:white;
+}
+
+.secret-message {
+  display:none;
+  max-width:520px;
+  margin:30px auto 0;
+  padding:25px;
+  background:rgba(30,0,0,.5);
+  border-left:2px solid #a10e13;
+  color:#c9bdb2;
+  font-size:19px;
+  line-height:1.8;
+  animation:appear 1s;
+}
+
+.secret-message strong {
+  display:block;
+  color:#d32929;
+  letter-spacing:4px;
+  margin-bottom:15px;
+}
+
+@keyframes appear {
+  from {opacity:0;transform:translateY(15px);}
+  to {opacity:1;transform:translateY(0);}
+}
+
+/* FOOTER */
+
+.footer {
+  margin-top:65px;
+  color:#716963;
+  font-size:14px;
+  font-style:italic;
+  letter-spacing:3px;
+}
+
+/* MESSAGE FANTÔME */
+
+.ghost-message {
+  position:fixed;
+  top:47%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:15;
+  color:rgba(160,0,0,.09);
+  font-family:'Creepster',cursive;
+  font-size:clamp(30px,8vw,90px);
+  white-space:nowrap;
+  pointer-events:none;
+  animation:ghost 12s infinite;
+}
+
+@keyframes ghost {
+  0%,75%,100% { opacity:0; }
+  78% { opacity:.8; }
+  80% { opacity:.05; }
+  84% { opacity:.5; }
+  87% { opacity:0; }
+}
+
+/* SECRET BUTTON */
+
+.secret {
+  position:fixed;
+  z-index:30;
+  right:20px;
+  bottom:18px;
+  color:#321010;
+  background:transparent;
+  border:0;
+  font-size:23px;
+  cursor:pointer;
+}
+
+.secret:hover { color:#c11a1a; }
+
+/* FINAL JUMPSCARE */
+
+#final {
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  background:#000;
+  overflow:hidden;
+  padding:20px;
+}
+
+#final.active {
+  display:flex;
+  animation:finalEntrance 1s forwards;
+}
+
+@keyframes finalEntrance {
+  0% {opacity:0;filter:blur(15px);}
+  20% {opacity:1;filter:blur(0);}
+  25% {opacity:.2;}
+  35% {opacity:1;}
+  100% {opacity:1;}
+}
+
+.final-flash {
+  position:absolute;
+  inset:0;
+  background:#710000;
+  opacity:0;
+  pointer-events:none;
+}
+
+#final.active .final-flash {
+  animation:redflash 1.2s;
+}
+
+@keyframes redflash {
+  0%,100% {opacity:0;}
+  10%,30% {opacity:.8;}
+  20% {opacity:.1;}
+}
+
+.final-warning {
+  color:#9e1818;
+  font-family:'Share Tech Mono',monospace;
+  letter-spacing:7px;
+  font-size:12px;
+  margin-bottom:35px;
+  animation:blink .3s infinite;
+}
+
+.final-title {
+  font-family:'Creepster',cursive;
+  font-size:clamp(65px,13vw,155px);
+  line-height:.9;
+  font-weight:400;
+  color:#bd1111;
+  text-shadow:
+    4px 0 #300000,
+    -4px 0 #300000,
+    0 0 40px #a00000;
+  animation:finalGlitch .12s infinite alternate;
+}
+
+@keyframes finalGlitch {
+  from {transform:translateX(-3px) skewX(-1deg);}
+  to {transform:translateX(3px) skewX(1deg);}
+}
+
+.final-sub {
+  color:#aaa;
+  margin-top:45px;
+  letter-spacing:5px;
+  font-size:12px;
+}
+
+.final-bottom {
+  color:#651010;
+  font-family:'Share Tech Mono',monospace;
+  margin-top:65px;
+  font-size:10px;
+  letter-spacing:4px;
+}
+
+/* MOBILE */
+
+@media(max-width:600px) {
+  .hud {
+    font-size:8px;
+    left:10px;
+    right:10px;
+  }
+
+  .card { padding:27px 12px; }
+
+  .countdown {gap:12px;}
+  .unit {min-width:45px;}
+
+  main {padding-top:100px;}
+
+  .subtitle {letter-spacing:5px;}
+
+  .final-warning {letter-spacing:3px;}
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *, *::before, *::after {
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="tunnel"></div>
+<div class="tunnel-shape"></div>
+<div class="fog"></div>
+<div class="noise"></div>
+<div class="scanlines"></div>
+<div class="vhs"></div>
+<div class="flicker"></div>
+
+<div class="hud">
+  <span>CAM_04 // CHÂTEAU ROUGE</span>
+  <span class="rec">● REC</span>
+  <span id="clock">00:00:00</span>
+</div>
+
+<!-- INTRO -->
+
+<div class="intro" id="intro">
+
+  <div class="intro-label">ARCHIVES INTERDITES // 05.12.2026</div>
+
+  <h1>NE DESCENDS<br>PAS.</h1>
+
+  <p>UNE ANOMALIE A ÉTÉ DÉTECTÉE.</p>
+
+  <button class="enter" onclick="enterSite()">
+    ENTRER MALGRÉ TOUT
+  </button>
+
+  <p style="font-size:9px;color:#511010;margin-top:35px">
+    VOUS AVEZ ÉTÉ PRÉVENU.
+  </p>
+
+</div>
+
+<!-- INVITATION -->
+
+<main id="main">
+
+  <div class="file">
+    DOSSIER N° 05122026 // CLASSIFICATION : INTERDIT
+  </div>
+
+  <div class="warning">
+    ⚠ AVIS DE RECHERCHE — PERSONNES CONVOQUÉES ⚠
+  </div>
+
+  <h2>TRIPLE<br>ANNIVERSAIRE</h2>
+
+  <div class="subtitle">
+    L'ÉVÉNEMENT MYSTÈRE
+  </div>
+
+  <div class="divider"></div>
+
+  <section class="card">
+
+    <div class="card-label">
+      CONVOCATION OFFICIELLE
+    </div>
+
+    <div class="date">
+      SAMEDI 5 DÉCEMBRE 2026<br>
+      16H20
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card-label">
+      POINT DE RENDEZ-VOUS
+    </div>
+
+    <div class="place">
+      MÉTRO CHÂTEAU ROUGE
+    </div>
+
+  </section>
+
+  <div class="countdown-title">
+    TEMPS RESTANT AVANT L'INÉVITABLE
+  </div>
+
+  <div class="countdown" id="countdown">
+
+    <div class="unit">
+      <strong id="days">00</strong>
+      <small>JOURS</small>
+    </div>
+
+    <div class="unit">
+      <strong id="hours">00</strong>
+      <small>HEURES</small>
+    </div>
+
+    <div class="unit">
+      <strong id="minutes">00</strong>
+      <small>MINUTES</small>
+    </div>
+
+    <div class="unit">
+      <strong id="seconds">00</strong>
+      <small>SECONDES</small>
+    </div>
+
+  </div>
+
+  <button class="reveal" onclick="reveal()">
+    ⚠ CONSULTER LE MESSAGE CONFIDENTIEL
+  </button>
+
+  <div class="secret-message" id="message">
+
+    <strong>!!! INSTRUCTION OBLIGATOIRE !!!</strong>
+
+    Prévois tes plus belles chaussettes.
+
+    On enlève les chaussures pour un concours
+    de la plus belle paire !
+
+    <br><br>
+
+    <span style="color:#8d1717">
+      NE PAS NÉGLIGER CETTE CONSIGNE.
+    </span>
+
+  </div>
+
+  <div class="footer">
+    (Le reste... c'est une surprise !)
+  </div>
+
+  <div style="
+    font-family:'Share Tech Mono';
+    color:#4c1010;
+    font-size:9px;
+    letter-spacing:3px;
+    margin-top:40px;
+  ">
+    SIGNAL PERDU // NE QUITTEZ PAS LA STATION
+  </div>
+
+</main>
+
+<div class="ghost-message">
+  IL EST DÉJÀ LÀ.
+</div>
+
+<!-- SECRET -->
+
+<button class="secret"
+        onclick="triggerFinal()"
+        title="Ne cliquez pas...">
+  ☠
+</button>
+
+<!-- FINAL -->
+
+<div id="final">
+
+  <div class="final-flash"></div>
+
+  <div class="final-warning">
+    ERREUR SYSTÈME // IDENTITÉ RÉVÉLÉE
+  </div>
+
+  <h1 class="final-title">
+    KEVIN<br>PUE DU CUL
+  </h1>
+
+  <div class="final-sub">
+    LA VÉRITÉ ÉCLATE ENFIN.
+  </div>
+
+  <div class="final-bottom">
+    FIN DE TRANSMISSION.
+  </div>
+
+</div>
+
+<script>
+
+/* HORLOGE */
+
+function updateClock() {
+  document.getElementById("clock").textContent =
+    new Date().toLocaleTimeString("fr-FR");
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+/* INTRO */
+
+function enterSite() {
+  document.getElementById("intro").classList.add("hidden");
+
+  document.body.style.animation =
+    "none";
+
+  setTimeout(() => {
+    document.getElementById("intro").style.display = "none";
+  },1600);
+}
+
+/* DATE DU RENDEZ-VOUS */
+
+const eventDate = new Date(2026,11,5,16,20,0).getTime();
+
+let finished = false;
+
+function countdown() {
+
+  const now = Date.now();
+  const diff = eventDate - now;
+
+  if(diff <= 0) {
+
+    ["days","hours","minutes","seconds"].forEach(id => {
+      document.getElementById(id).textContent = "00";
+    });
+
+    if(!finished) triggerFinal();
+
+    return;
+  }
+
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000)/3600000);
+  const m = Math.floor((diff % 3600000)/60000);
+  const s = Math.floor((diff % 60000)/1000);
+
+  document.getElementById("days").textContent =
+    String(d).padStart(2,"0");
+
+  document.getElementById("hours").textContent =
+    String(h).padStart(2,"0");
+
+  document.getElementById("minutes").textContent =
+    String(m).padStart(2,"0");
+
+  document.getElementById("seconds").textContent =
+    String(s).padStart(2,"0");
+}
+
+countdown();
+setInterval(countdown,1000);
+
+/* MESSAGE CONFIDENTIEL */
+
+function reveal() {
+
+  const message = document.getElementById("message");
+
+  message.style.display =
+    message.style.display === "block" ? "none" : "block";
+
+}
+
+/* TWIST FINAL */
+
+function triggerFinal() {
+
+  if(finished) return;
+
+  finished = true;
+
+  document.getElementById("final").classList.add("active");
+
+  document.body.style.overflow = "hidden";
+
+  // Flash visuel
+  document.body.style.background = "#650000";
+
+  setTimeout(() => {
+    document.body.style.background = "#000";
+  },150);
+
+}
+
+/* EASTER EGG CLAVIER : TAPER KEVIN */
+
+let secretCode = "";
+
+document.addEventListener("keydown", function(e) {
+
+  if(e.key.length !== 1) return;
+
+  secretCode += e.key.toLowerCase();
+
+  secretCode = secretCode.slice(-5);
+
+  if(secretCode === "kevin") {
+    triggerFinal();
+  }
+
+});
+
+</script>
+
+</body>
+</html>
